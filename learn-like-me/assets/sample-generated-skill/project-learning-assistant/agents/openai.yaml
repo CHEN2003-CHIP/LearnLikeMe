@@ -1,0 +1,4 @@
+interface:
+  display_name: "Project Learning Assistant"
+  short_description: "Use when learning a codebase with proactive guided pacing"
+  default_prompt: "Use project-learning-assistant to teach this repository with roadmap-driven explanations, proactive hidden questions, and profile-aware pacing."

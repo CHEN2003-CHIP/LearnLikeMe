@@ -1,0 +1,4 @@
+interface:
+  display_name: "LearnLikeMe"
+  short_description: "Use when building a personalized software-learning coach"
+  default_prompt: "Use learn-like-me to interview a learner about project-learning preferences and generate a personalized project-learning assistant skill."
