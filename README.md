@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Turn real chat history into a personalized project-learning copilot.
+  Turn real chat history into a personalized project-learning copilot with Codex.
 </p>
 
 <p align="center">
@@ -14,7 +14,7 @@
   <img src="https://img.shields.io/badge/history-driven-f59e0b?style=for-the-badge" alt="History Driven" />
 </p>
 
-LearnLikeMe is an OpenAI Agent Skill package that helps people build their own project-learning assistant from the way they already learn.
+LearnLikeMe is a Codex-friendly OpenAI Agent Skill package that helps people build their own project-learning assistant from the way they already learn.
 
 Instead of forcing every user through the same generic tutor flow, LearnLikeMe can ingest prior Markdown chat history, infer stable learning patterns, ask only the missing questions, and generate a runtime skill that teaches codebases the way that specific person actually absorbs them.
 
@@ -28,11 +28,13 @@ LearnLikeMe is built around a different idea:
 - your ideal pace, explanation depth, and question style should shape the assistant
 - project learning should be proactive, roadmap-driven, and adaptive
 - the assistant should help you learn repositories, docs, architecture, and modules, not just answer isolated questions
+- the repo is structured so Codex can read local files and generate the personalized skill directly
 
 ## What You Get
 
 - A builder skill: `learn-like-me`
 - A generated runtime skill: `project-learning-assistant`
+- A fixed output location for generated skills: `generated-skills/`
 - History-first personalization from Markdown exports
 - A stable drop-folder convention for repeated use
 - A proactive output contract for every learning step:
@@ -70,7 +72,7 @@ learn-like-me-input/
 
 ### 3. Generate your own runtime learning copilot
 
-The builder creates `project-learning-assistant`, a runtime skill that adapts to your pace, depth, question habits, and comprehension limits.
+The builder creates `project-learning-assistant`, writes it to `generated-skills/project-learning-assistant/`, and adapts it to your pace, depth, question habits, and comprehension limits.
 
 ### 4. Learn real projects better
 
@@ -99,6 +101,79 @@ You get a learning copilot that behaves more like:
 
 That difference is where most of the value lives.
 
+## Codex Quick Start
+
+This repository is currently optimized for users who download it locally and use Codex against the project files.
+
+### Step 1. Clone the repo
+
+```bash
+git clone https://github.com/CHEN2003-CHIP/LearnLikeMe.git
+cd LearnLikeMe
+```
+
+### Step 2. Put your materials into the input folder
+
+Drop your exported Markdown chats into:
+
+```text
+learn-like-me-input/history/
+```
+
+Then optionally edit:
+
+- `learn-like-me-input/preferences.md`
+- `learn-like-me-input/context.md`
+
+### Step 3. Open the repo in Codex
+
+Point Codex at the local project folder so it can read:
+
+- `learn-like-me/`
+- `learn-like-me-input/history/`
+- `learn-like-me-input/preferences.md`
+- `learn-like-me-input/context.md`
+- `generated-skills/`
+
+### Step 4. Give Codex the starter prompt
+
+Open [CODEX-STARTER-PROMPT.md](./CODEX-STARTER-PROMPT.md) and paste that prompt into Codex, or use the equivalent instruction in your own words.
+
+### Step 5. Let Codex generate your personalized skill
+
+Codex should:
+
+1. read the history files first
+2. infer your learning profile
+3. ask only minimal follow-up questions if needed
+4. generate `project-learning-assistant`
+5. write it to `generated-skills/project-learning-assistant/`
+6. keep the output proactive, roadmap-driven, and personalized
+
+### Step 6. Use the generated runtime skill to learn real projects
+
+After generation, tell Codex to use the generated skill directly, for example:
+
+```text
+Use generated-skills/project-learning-assistant to help me learn this repository.
+Start with a project map, then guide me step by step.
+```
+
+Once generated, the runtime skill should help you learn:
+
+- repository structure
+- code flow
+- architecture
+- modules
+- docs
+
+Every step should end with:
+
+- `project map`
+- `current understanding`
+- `hidden questions`
+- `next best step`
+
 ## Repository Structure
 
 ```text
@@ -112,6 +187,8 @@ That difference is where most of the value lives.
 |  |- history/
 |  |- preferences.md
 |  `- context.md
+|- generated-skills/
+|  `- project-learning-assistant/
 `- skill.zip
 ```
 
@@ -130,11 +207,14 @@ If you believe developer tools should adapt to how humans learn, this project is
 
 ## Quick Start
 
-1. Put your Markdown chat exports into `learn-like-me-input/history/`.
-2. Add optional notes to `learn-like-me-input/preferences.md` and `learn-like-me-input/context.md`.
-3. Use the `learn-like-me` builder skill.
-4. Review the inferred learning profile.
-5. Generate your personalized `project-learning-assistant`.
+1. Clone the repository locally.
+2. Put your Markdown chat exports into `learn-like-me-input/history/`.
+3. Add optional notes to `learn-like-me-input/preferences.md` and `learn-like-me-input/context.md`.
+4. Open the repo in Codex.
+5. Paste the prompt from `CODEX-STARTER-PROMPT.md`.
+6. Let Codex write the generated skill to `generated-skills/project-learning-assistant/`.
+7. Review the inferred learning profile.
+8. Ask Codex to use `generated-skills/project-learning-assistant` to teach your target repo.
 
 ## Core Idea
 
