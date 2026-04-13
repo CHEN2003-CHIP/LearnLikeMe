@@ -1,3 +1,9 @@
-项目流程解析-2026-04-13.md
+# Local private chat history should stay out of git.
+# Put personal Markdown exports under learn-like-me-input/history/.
 learn-like-me-input/history/*
 !learn-like-me-input/history/.gitkeep
+
+# Generated user-specific outputs should stay local by default.
+generated-skills/learning-profile.md
+generated-skills/project-learning-assistant/*
+!generated-skills/project-learning-assistant/.gitkeep

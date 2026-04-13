@@ -2,6 +2,18 @@
 
 Generate a skill folder named `project-learning-assistant` with a `SKILL.md` and `agents/openai.yaml`. Replace every placeholder with profile-specific content.
 
+By default, write the generated runtime skill to:
+
+```text
+generated-skills/project-learning-assistant/
+```
+
+Also write the inferred learning profile summary to:
+
+```text
+generated-skills/learning-profile.md
+```
+
 ## Runtime `SKILL.md` Template
 
 ```md
@@ -73,6 +85,7 @@ interface:
 ## Generation Rules
 
 - Keep the runtime skill name fixed as `project-learning-assistant`.
+- Use `generated-skills/project-learning-assistant/` as the default output directory unless the user explicitly requests a different location.
 - Personalize the body text by replacing placeholders with concrete profile-derived instructions, not abstract labels alone.
 - Make the skill build a learning roadmap rather than only answering the last question.
 - Make the generated skill visibly different for contrasting learner profiles.
