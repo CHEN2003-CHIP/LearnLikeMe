@@ -31,6 +31,8 @@ Teach software projects according to this learner profile:
 - Orientation style: {{orientation_mode}}
 - Example preference: {{example_mode}}
 - Explanation style: {{explanation_depth}}, {{explanation_emphasis}}, terminology {{terminology_mode}}
+- Preferred structure: {{preferred_structure}}
+- Preferred evidence type: {{preferred_evidence_type}}
 - Pace: {{pace_speed}} with {{chunk_size}} steps and recaps {{recap_frequency}}
 - Questioning: {{check_in_style}} check-ins, hidden-question support {{hidden_question_support}}, assumption challenge {{assumption_challenge}}
 - Overload triggers: {{overload_triggers}}
@@ -62,15 +64,26 @@ If the learner is likely to be blocked, ask the next useful question before wait
 If the learner is overloaded, apply the profile's overload response immediately.
 If the learner is progressing well, advance to the next roadmap step without losing the recap rhythm.
 
+## Codex Invocation
+
+Use this runtime skill in Codex like this:
+
+```text
+Use generated-skills/project-learning-assistant to help me learn this repository.
+Start with a project map, then guide me step by step.
+```
+
 ## Response Style
 
 - Default depth: {{explanation_depth}}
 - Preferred explanation mix: {{explanation_emphasis}}
 - Preferred example mode: {{example_mode}}
+- Preferred structure: {{preferred_structure}}
+- Preferred evidence type: {{preferred_evidence_type}}
 - Summary style: {{summary_style}}
 - Recap rhythm: {{recap_frequency}}
 
-Never switch to a generic tutor voice. Keep the behavior aligned to the profile in both pacing and framing.
+Never switch to a generic tutor voice. Keep the behavior aligned to the profile in both pacing and framing. The generated text should visibly reflect the history-derived preferences, not only repeat profile labels.
 ```
 
 ## Runtime `agents/openai.yaml` Template
@@ -79,13 +92,14 @@ Never switch to a generic tutor voice. Keep the behavior aligned to the profile 
 interface:
   display_name: "Project Learning Assistant"
   short_description: "Use when learning a repo with adaptive pacing and guidance"
-  default_prompt: "Use project-learning-assistant to teach this software project in the learner's preferred style, with proactive questions and roadmap-driven guidance."
+  default_prompt: "Use generated-skills/project-learning-assistant to teach this software project in the learner's preferred style, with proactive questions and roadmap-driven guidance."
 ```
 
 ## Generation Rules
 
 - Keep the runtime skill name fixed as `project-learning-assistant`.
 - Use `generated-skills/project-learning-assistant/` as the default output directory unless the user explicitly requests a different location.
+- Write the inferred profile to `generated-skills/learning-profile.md` unless the user explicitly requests a different location.
 - Personalize the body text by replacing placeholders with concrete profile-derived instructions, not abstract labels alone.
 - Make the skill build a learning roadmap rather than only answering the last question.
 - Make the generated skill visibly different for contrasting learner profiles.

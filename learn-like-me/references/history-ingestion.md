@@ -24,74 +24,65 @@ Minimum supported input:
 
 Optional supporting files:
 
-- `preferences.md`: explicit user notes such as "I prefer top-down explanations"
-- `context.md`: project or role context such as "I usually learn backend repos"
-
-If the environment does not contain this exact folder, use any user-provided Markdown path, but prefer the convention above for repeatability across users.
+- `preferences.md`: explicit learner notes such as "I prefer top-down explanations"
+- `context.md`: role or project context such as "I usually learn backend repos"
 
 ## Ingestion Goal
 
 Infer the learner's actual behavior from real conversations before asking questions. The builder should reduce questionnaire length when the history already provides strong evidence.
 
-## Signals to Extract
+## Minimum Extraction Checklist
 
-Map historical evidence into the learning profile by looking for repeated patterns such as:
+Extract and evaluate evidence for these dimensions from chat logs:
 
-- requests for top-down overview vs bottom-up tracing
-- requests for concrete call chains, files, methods, parameters, or examples
-- requests for slower pacing, smaller chunks, or more recap
-- phrases that indicate overload: "too abstract", "hard to follow", "do not expand yet", "too much at once"
-- phrases that indicate desired structure: "start with the conclusion", "overall picture first", "give me a timeline", "step by step"
-- whether the user asks many follow-up questions or relies on the assistant to surface likely next questions
-- whether the user values directness, roadmap summaries, diagrams, timelines, or implementation detail
+- orientation style
+- explanation depth
+- pacing and chunk size
+- preferred structure
+- overload triggers
+- question style
+- summary style
+- preferred evidence type
+- hidden-question tolerance
 
-## Stable vs Situational Preferences
+## Evidence Model
 
-Separate long-term habits from one-off task needs.
+For each important preference signal, capture:
 
-- Stable preference: appears repeatedly across sessions or in explicit corrections, and should shape the generated runtime skill by default.
-- Situational preference: appears tied to one repo, one debugging task, or one document type, and should be kept as context rather than promoted to a permanent teaching rule.
+- `signal`
+- `confidence`: `high | medium | low`
+- `evidence`: a short excerpt or paraphrase
+- `classification`: `stable | situational`
+- `affected_runtime_behavior`
 
-Examples:
+## Conflict Resolution
 
-- Stable: "start with the big picture before deep tracing"
-- Stable: "explanations should stay detailed but easy to follow"
-- Situational: "for this repo, include classes, methods, and parameters in full detail"
-- Situational: "for rewind logic, focus on command dispatch instead of tools"
+When history suggests mixed preferences:
 
-## Confidence Rules
+1. Prefer repeated behavior over a single explicit claim.
+2. Prefer recent evidence only when it clearly looks like a stable correction rather than a one-off task constraint.
+3. If two plausible interpretations remain, keep the safer default in the profile and ask one narrowly scoped follow-up question.
+4. Record the conflict in the evidence notes instead of hiding it.
 
-Treat a preference as high confidence when:
+## Insufficient Evidence Rule
 
-- it appears multiple times across conversations, or
-- the user explicitly corrects the assistant toward that preference, or
-- the same pattern appears in both the user's request wording and the assistant responses that the user accepts
-
-Treat a preference as low confidence when:
-
-- it appears only once,
-- it may be specific to one project rather than the learner generally, or
-- there is conflicting evidence elsewhere in the history
+Do not guess on thin evidence. If a field materially affects runtime behavior and history support is weak, ask a targeted follow-up question only for that field.
 
 ## Recommended Builder Flow
 
 1. Read all Markdown files from `<workspace>/learn-like-me-input/history/`.
-2. Extract repeated preference signals and attach short evidence quotes or paraphrases to schema fields.
+2. Extract repeated preference signals and attach evidence to schema fields.
 3. Classify each signal as stable or situational.
-4. Pre-fill the learning profile.
-5. Ask only targeted follow-up questions for missing, contradictory, or low-confidence fields.
-6. Show the inferred profile in plain language and invite corrections.
-7. Generate `project-learning-assistant` from the corrected profile.
-
-## What This Improves
-
-- less repetitive intake for the user
-- more realistic personalization based on observed behavior
-- better portability because every user can follow the same drop-folder convention
-- easier automation later if the builder is extended with scripts or import tooling
+4. Assign confidence to each major signal.
+5. Pre-fill the learning profile.
+6. Ask only targeted follow-up questions for missing, contradictory, or low-confidence fields.
+7. Show the inferred profile in plain language and invite corrections.
+8. Generate `project-learning-assistant` from the corrected profile.
+9. Write outputs to `generated-skills/project-learning-assistant/` and `generated-skills/learning-profile.md` by default.
 
 ## Important Boundaries
 
 - Do not assume one project-specific preference applies globally without enough evidence.
 - Separate stable learning habits from one-off task requirements.
 - Prefer asking one short confirmation question over hard-coding a shaky inference.
+- Keep the repo optimized for Codex use of local files; generic ChatGPT-direct installation is out of scope for this iteration.
